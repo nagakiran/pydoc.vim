@@ -33,6 +33,9 @@ function! ShowPyDoc(name, type)
     if !exists('g:pydoc_cmd')
         let g:pydoc_cmd = 'pydoc'
     endif
+    if !exists('g:pydoc3_cmd')
+        let g:pydoc3_cmd = 'pydoc3'
+    endif
 
     if bufloaded("__doc__") >0
         let l:buf_is_new = 0
@@ -55,6 +58,8 @@ function! ShowPyDoc(name, type)
     let s:name2 = substitute(s:name2, ':', '', 'g' )
     if a:type==1
         execute  "silent read ! " . g:pydoc_cmd . " " . s:name2 
+    elseif a:type==3
+        execute  "silent read ! " . g:pydoc3_cmd . " " . s:name2
     else 
         execute  "silent read ! " . g:pydoc_cmd . " -k " . s:name2 
     endif	
@@ -108,4 +113,5 @@ nnoremap <silent> <buffer> K :call ShowPyDoc(expand("<cword>"), 1)<CR>
 
 "commands
 command! -nargs=1 Pydoc :call ShowPyDoc('<args>', 1)
+command! -nargs=1 Pydoc3 :call ShowPyDoc('<args>', 3)
 command! -nargs=*  PydocSearch :call ShowPyDoc('<args>', 0)
